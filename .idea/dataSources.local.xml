@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="testRun.py" uuid="9f7d04cf-9ec2-42c2-a2a6-40ffa1e46fde">
+    <data-source name="app" uuid="c876e96b-8251-4b28-9a5a-2ebaf2408e0c">
       <database-info product="SQLite" version="3.25.1" jdbc-version="2.1" driver-name="SQLite JDBC" driver-version="3.25.1" dbms="SQLITE" exact-version="3.25.1" exact-driver-version="3.25">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
-      <secret-storage>master_key</secret-storage>
       <auth-required>false</auth-required>
       <schema-mapping>
         <introspection-scope>
