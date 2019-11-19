@@ -1,7 +1,17 @@
-<head>
-<div>
-    PriceWatchers
-    <a href="/index">Home</a>
-    <a href="/login">Login</a>
-</div>
-</head>
+<html>
+    <head>
+    {% if title %}
+    <title>{{ title }}- PriceWatchers</title>
+    {% else %}
+    <title>Welcome to PriceWatchers!</title>
+    {% endif %}
+    </head>
+    <body>
+        <div>
+        PriceWatchers
+        <a href="/home">Home</a>
+        <a href="/login">Login</a>
+        </div>
+        {% block content %}{% endblock %}
+    </body>
+</html>
