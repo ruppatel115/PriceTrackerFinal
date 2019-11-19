@@ -1,6 +1,7 @@
 from app import db
+
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, login_manager
 from datetime import datetime
 
 class User(UserMixin, db.Model):
@@ -10,6 +11,10 @@ class User(UserMixin, db.Model):
     emailid = db.Column(db.Integer(), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     user_to_items = db.relationship('Item', backref='id', lazy='dynamic')
+
+
+
+
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
