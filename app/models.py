@@ -13,9 +13,6 @@ class User(UserMixin, db.Model):
     user_to_items = db.relationship('Item', backref='id', lazy='dynamic')
 
 
-
-
-
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(64), index=True, unique=True)
