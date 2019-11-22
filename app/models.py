@@ -37,7 +37,7 @@ class ItemToTime(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
   datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
+#testing comit
 
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
