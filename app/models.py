@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True)
     name = db.Column(db.String(64), index=True)
-    email = db.Column(db.Integer())
+    email = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
     user_to_items = db.relationship('Item', backref='item', lazy='dynamic')
 
