@@ -38,6 +38,7 @@ class ItemToTime(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
   datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+  price = db.Column(db.Integer())
 
   def validate_datetime(self, datetime):
       datetime = Event.query.filter_by(datetime=datetime.data).first()
