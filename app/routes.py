@@ -22,7 +22,7 @@ def home():
             'body': 'The Avengers movie was so cool!'
         }
     ]
-    return render_template('home.html', title='Home', user=user, posts=posts)
+    return render_template('home.html', title='Home')
 
 
 @app.route('/login', methods=['GET', 'POST'])
