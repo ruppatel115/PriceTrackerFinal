@@ -1,8 +1,9 @@
-from app import db
-
+from app import db, login
+from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_manager
 from datetime import datetime
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,16 +31,27 @@ class Item(db.Model):
     price = db.Column(db.Integer())
     description = db.Column(db.String(10000))
     userId = db.Column(db.Integer(), db.ForeignKey('user.id'))
-    user_to_items = db.relationship('Item', backref='item', lazy='dynamic')
     item_to_time = db.relationship('ItemToTime', backref='item', lazy='dynamic')
+    item_to_email = db.relationship('Email', backref='item', lazy='dynamic')
     
 class ItemToTime(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
   datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+  def validate_datetime(self, datetime):
+      datetime = Event.query.filter_by(datetime=datetime.data).first()
+      if datetime is not None:
+          raise ValidationError('No eventDate name enter')
 #testing comi
 
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128))
+    itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
     #email_to_users = db.relationship('User', backref='user', lazy='dynamic')
+    
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
