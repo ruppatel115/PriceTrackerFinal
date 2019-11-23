@@ -68,4 +68,5 @@ def reset_db():
     for table in reversed(meta.sorted_tables):
         print('Clear table {}'.format(table))
         db.session.execute(table.delete())
-        
+
+    return redirect(url_for('home'))
