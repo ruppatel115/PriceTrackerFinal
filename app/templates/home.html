@@ -1,3 +1,4 @@
+
  {% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container">
@@ -27,6 +28,7 @@
     </nav>
 {% endblock %}
 
+
 {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
@@ -37,25 +39,25 @@
         {% endif %}
         {% endwith %}
 
+        {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
     </div>
 {% endblock %}
+
+ <head>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+ </head>
 <h2>Welcome to PriceWatchers!</h2>
+  <body>
  <h3>Enter url for item to track pricing!</h3>
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-            <form action="/hms/accommodations" method="GET">
-                <div class="row">
-                    <div class="col-xs-6 col-md-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Enter URL" id="txtSearch"/>
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary" type="submit">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+<form method="POST" action="/item">
+    <div class="form-group">
+        <input type="text" name="url">
+    </div>
+    <input class="btn btn-primary" type="submit" value="submit">
+</form>
+
+</body>
 
 

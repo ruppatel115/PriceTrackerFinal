@@ -60,6 +60,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
 @app.route('/reset')
 def reset_db():
     flash("Resetting database: deleting old data")
@@ -70,3 +71,11 @@ def reset_db():
         db.session.execute(table.delete())
 
     return redirect(url_for('home'))
+
+@app.route('/item', methods=['GET', 'POST'])
+def item():
+    if request.method == 'POST':
+        url = request.form['url']
+
+        return render_template('item.html', url=url)
+    return render_template('home.html')
