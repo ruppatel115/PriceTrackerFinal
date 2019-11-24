@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b803381f1ebd
+Revision ID: 5d0793de6149
 Revises: 
-Create Date: 2019-11-22 18:44:57.956964
+Create Date: 2019-11-24 13:11:04.761629
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b803381f1ebd'
+revision = '5d0793de6149'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,7 +32,9 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=64), nullable=True),
     sa.Column('name', sa.String(length=128), nullable=True),
-    sa.Column('price', sa.Integer(), nullable=True),
+    sa.Column('current_price', sa.Integer(), nullable=True),
+    sa.Column('highest_price', sa.Integer(), nullable=True),
+    sa.Column('lowest_price', sa.Integer(), nullable=True),
     sa.Column('description', sa.String(length=10000), nullable=True),
     sa.Column('userId', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['userId'], ['user.id'], ),
@@ -50,6 +52,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('itemid', sa.Integer(), nullable=True),
     sa.Column('datetime', sa.DateTime(), nullable=True),
+    sa.Column('price', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['itemid'], ['item.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

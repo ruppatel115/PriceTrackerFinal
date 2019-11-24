@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import *
-from flask_login import *
+from flask_login import LoginManager
 from app.models import *
 from datetime import datetime
 
