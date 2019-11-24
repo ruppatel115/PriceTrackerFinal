@@ -74,6 +74,7 @@ def reset_db():
 
 @app.route('/item', methods=['GET', 'POST'])
 def item():
+    #addmore database stuff for page
     if request.method == 'POST':
         url = request.form['url']
 
