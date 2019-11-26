@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
+from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import *
@@ -11,17 +12,17 @@ from datetime import datetime
 @app.route('/')
 @app.route('/home')
 def home():
-    user = {'username': 'Miguel'}
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
+    # user = {'username': 'Miguel'}
+    # posts = [
+    #     {
+    #         'author': {'username': 'John'},
+    #         'body': 'Beautiful day in Portland!'
+    #     },
+    #     {
+    #         'author': {'username': 'Susan'},
+    #         'body': 'The Avengers movie was so cool!'
+    #     }
+    # ]
     return render_template('home.html', title='Home')
 
 
@@ -80,3 +81,11 @@ def item():
 
         return render_template('item.html', url=url)
     return render_template('home.html')
+
+@app.route('/profile')
+@login_required
+def profile():
+    # currentuser = User.query.filter_by(username={{current_user.name}}).first()
+    # useritems = Item.query.filter_by(userId=currentuser.id).all()
+
+    return render_template('profile.html',title='Profile')#,items=useritems)

@@ -16,4 +16,4 @@ login = LoginManager(app)
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
 #testing boostrap
-from app import routes, models, forms
+from app import routes, models, forms, errors
