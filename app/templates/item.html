@@ -1,16 +1,39 @@
 {% extends "base.html" %}
 
-
+{% block app_content %}
  <head>
+ <meta charset="utf-8" />
+  <title>Chart.js Example</title>
+  <!-- import plugin script -->
+  <script src='templates/chart.min.js'></script>
 
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
  </head>
+<h1>Simple Line Chart</h1>
+<!-- bar chart canvas element -->
+<canvas id="myChart" width="600" height="400"></canvas>
+<p id="caption">The chart is displaying a simple line chart.</p>
  <body>
+  <h3>Enter url for item to track pricing!</h3>
+ <form method="POST" action="/item">
+    <div class="form-group">
+        <input type="text" name="url">
+    </div>
+    <input class="btn btn-primary" type="submit" value="submit">
+</form>
 
- <h1>
+ <h4>
      Your item is {{ url }}
- </h1>
+ </h4>
+<h4>
+Product Name: {{ name }}
+    </h4>
+
+
+{% endblock %}
+
+
 
 
  </body>

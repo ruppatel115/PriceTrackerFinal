@@ -78,8 +78,10 @@ def item():
     #addmore database stuff for page
     if request.method == 'POST':
         url = request.form['url']
-
-        return render_template('item.html', url=url)
+        legend = 'Monthly Data'
+        labels = ["January", "February", "March", "April", "May", "June", "July", "August"]
+        values = [10, 9, 8, 7, 6, 4, 7, 8]
+        return render_template('item.html', url=url, values=values, labels=labels, legend=legend)
     return render_template('home.html')
 
 @app.route('/profile')
