@@ -6,6 +6,7 @@ from app.forms import *
 from flask_login import LoginManager
 from app.models import *
 from datetime import datetime
+from random import sample
 
 
 
@@ -78,10 +79,9 @@ def item():
     #addmore database stuff for page
     if request.method == 'POST':
         url = request.form['url']
-        legend = 'Monthly Data'
-        labels = ["January", "February", "March", "April", "May", "June", "July", "August"]
-        values = [10, 9, 8, 7, 6, 4, 7, 8]
-        return render_template('item.html', url=url, values=values, labels=labels, legend=legend)
+
+
+        return render_template('item.html', url=url)
     return render_template('home.html')
 
 @app.route('/profile')
@@ -91,3 +91,9 @@ def profile():
     # useritems = Item.query.filter_by(userId=currentuser.id).all()
 
     return render_template('profile.html',title='Profile')#,items=useritems)
+
+
+@app.route('/data')
+def data():
+    my_items=item.query.all()
+    return render_template('data.html', my_items=my_items)
