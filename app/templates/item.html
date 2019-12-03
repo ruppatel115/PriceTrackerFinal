@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
 <h4>
@@ -7,7 +8,13 @@
 Product Name: {{ name }}
 
 </h4>
-
+    <h4>    {# TODO: hide email part if logged in with email, hide form after submission #}
+    <div class="row" style="border: 2px solid black">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+</h4>
 
 <html>
   <head>

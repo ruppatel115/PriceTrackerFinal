@@ -79,9 +79,12 @@ def item():
     #addmore database stuff for page
     if request.method == 'POST':
         url = request.form['url']
+        form = SetPriceForm()
+        if form.validate_on_submit():
+            trackingPrice = form.tracking_price
+            #Do something with that
 
-
-        return render_template('item.html', url=url)
+        return render_template('item.html', url=url,form=form) #TODO item parameter
     return render_template('home.html')
 
 @app.route('/profile')
