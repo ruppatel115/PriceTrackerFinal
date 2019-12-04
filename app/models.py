@@ -42,6 +42,7 @@ class ItemToTime(db.Model):
   datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
   price = db.Column(db.Integer())
 
+  # TODO: Do we need to keep this
   def validate_datetime(self, datetime):
       datetime = Event.query.filter_by(datetime=datetime.data).first()
       if datetime is not None:
