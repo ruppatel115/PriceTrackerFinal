@@ -27,10 +27,10 @@ from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField
 def home():
     search = SearchForm(request.form)
 
-    # if request.method == 'POST' and search.validate_on_submit():
-    #     item = item.filter(models.Item.name.like('%' + searchForm.item_name.data + '%'))
-    #     item = item.order_by(models.Item.name).all()
-    #     return render_template('item.html')
+    if request.method == 'POST' and search.validate_on_submit():
+        item = item.filter(models.Item.name.like('%' + searchForm.item_name.data + '%'))
+        item = item.order_by(models.Item.name).all()
+        return render_template('item.html')
     return render_template('home.html', title='Home')
 
 

@@ -13,7 +13,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
-    user_to_items = db.relationship('Item', backref='item', lazy='dynamic')
+    itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
+
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -34,7 +35,7 @@ class Item(db.Model):
     highest_price = db.Column(db.Integer())
     lowest_price = db.Column(db.Integer())
     description = db.Column(db.String(10000))
-    userId = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    user_to_items = db.relationship('User', backref='item', lazy='dynamic')
     item_to_time = db.relationship('ItemToTime', backref='item', lazy='dynamic')
     item_to_email = db.relationship('Email', backref='item', lazy='dynamic')
     
