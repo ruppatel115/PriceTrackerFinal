@@ -19,7 +19,7 @@ Product Name: {{ name }}
      $('#search').click(function() {
        var text = $('#query').val();
         $.ajax({
-        url: "/search",
+        url: "/test",
         type: "get",
         data: {query: text},
         success: function(response) {

@@ -1,29 +1,36 @@
+import sqlite3
+
+import flask
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app, db
+from app import app, db, models
 from app.forms import *
 from flask_login import LoginManager
 from app.models import *
 from datetime import datetime
 from random import sample
+from flask_wtf import Form
+from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
 
+
+#
+# @app.route('/test')
+# def search():
+#    term = flask.request.args.get('query')
+#    possibilities = [i for [i] in sqlite3.connect('app.db').cursor().execute("SELECT * FROM videos WHERE title LIKE %s", ("%" + user_input + "%")]
+#    return flask.jsonify({'html':'<p>No results found</p>' if not possibilities else '<ul>\n{}</ul>'.format('\n'.join('<li>{}</li>'.format(i) for i in possibilities))})
 
 
 @app.route('/')
 @app.route('/home')
 def home():
-    # user = {'username': 'Miguel'}
-    # posts = [
-    #     {
-    #         'author': {'username': 'John'},
-    #         'body': 'Beautiful day in Portland!'
-    #     },
-    #     {
-    #         'author': {'username': 'Susan'},
-    #         'body': 'The Avengers movie was so cool!'
-    #     }
-    # ]
+    search = SearchForm(request.form)
+
+    # if request.method == 'POST' and search.validate_on_submit():
+    #     item = item.filter(models.Item.name.like('%' + searchForm.item_name.data + '%'))
+    #     item = item.order_by(models.Item.name).all()
+    #     return render_template('item.html')
     return render_template('home.html', title='Home')
 
 
@@ -78,13 +85,15 @@ def reset_db():
 def item():
     #addmore database stuff for page
     if request.method == 'POST':
-        url = request.form['url']
+        name = request.form['name']
+
+
         form = SetPriceForm()
         if form.validate_on_submit():
             trackingPrice = form.tracking_price
             #Do something with that
 
-        return render_template('item.html', url=url,form=form) #TODO item parameter
+        return render_template('item.html', name=name, form=form) #TODO item parameter
     return render_template('home.html')
 
 @app.route('/profile')
@@ -115,3 +124,5 @@ def edit_profile():
 def data():
     my_items=item.query.all()
     return render_template('data.html', my_items=my_items)
+
+

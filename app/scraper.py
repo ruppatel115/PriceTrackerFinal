@@ -48,7 +48,7 @@ def send_mail():
 
     subject = 'Price dropped down!'
     body = Url;
-    msg = f"Subject: {subject}\n\n{body}"
+    msg = "Subject: {subject}\n\n{body}"
 
     server.sendmail(
         'ruppatel11599@gmail.com',

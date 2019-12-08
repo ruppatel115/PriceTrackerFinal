@@ -1,5 +1,5 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
+from flask_wtf import FlaskForm, Form
+from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 
 from app.models import User
@@ -48,5 +48,9 @@ class EditProfileForm(FlaskForm):
 class SetPriceForm(FlaskForm):
     tracking_price = IntegerField('Tracking Price', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit')
+
+class SearchForm(Form):
+    item_name = StringField('Search item', validators=[DataRequired()])
     submit = SubmitField('Submit')
 

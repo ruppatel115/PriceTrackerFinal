@@ -1,3 +1,5 @@
+from wtforms import ValidationError
+
 from app import db, login
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -42,12 +44,7 @@ class ItemToTime(db.Model):
   datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
   price = db.Column(db.Integer())
 
-  # TODO: Do we need to keep this
-  def validate_datetime(self, datetime):
-      datetime = Event.query.filter_by(datetime=datetime.data).first()
-      if datetime is not None:
-          raise ValidationError('No eventDate name enter')
-#testing comi
+
 
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)

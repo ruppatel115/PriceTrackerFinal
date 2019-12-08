@@ -2,14 +2,14 @@
 {% block app_content %}
 <h2>Welcome to PriceWatchers!</h2>
   <body>
- <h3>Enter url for item to track pricing!</h3>
+ <h3>Enter product name for item to track pricing!</h3>
+
 <form method="POST" action="/item">
     <div class="form-group">
-        <input type="text" name="url">
+        <input type="text" name="name">
     </div>
     <input class="btn btn-primary" type="submit" value="submit">
 </form>
-
 </body>
 {% endblock %}
 
