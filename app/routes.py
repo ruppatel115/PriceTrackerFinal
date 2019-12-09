@@ -1,7 +1,7 @@
 import sqlite3
 
 import flask
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db, models
@@ -9,24 +9,16 @@ from app.forms import *
 from flask_login import LoginManager
 from app.models import *
 from datetime import datetime
-from random import sample
+from random import sample, random
 from flask_wtf import Form
 from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
 
-#
-#
-# @app.route('/test')
-# def search():
-#    term = flask.request.args.get('query')
-#    possibilities = [i for [i] in sqlite3.connect('app.db').cursor().execute("SELECT * FROM videos WHERE title LIKE %s", ("%" + user_input + "%")]
-#    return flask.jsonify({'html':'<p>No results found</p>' if not possibilities else '<ul>\n{}</ul>'.format('\n'.join('<li>{}</li>'.format(i) for i in possibilities))})
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     form = SearchForm()
-    #if request.method=='POST':
     if form.validate_on_submit():
         item = Item.query.filter_by(name=form.item_name.data).first()
         if item is None:
@@ -115,9 +107,19 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile',form=form)
 
 
-@app.route('/data')
+@app.route('/item')
 def data():
-    my_items=item.query.all()
-    return render_template('data.html', my_items=my_items)
+    highest_price = Item.query.filter_by(highest_price=Item.highest_price).first().highest_price
+    lowest_price = Item.query.filter_by(lowest_price=Item.lowest_price).first().lowest_price
+    current_price = Item.query.filter_by(current_price=Item.current_price).first().current_price
 
 
+    return jsonify({'results': sample(range(lowest_price,highest_price), 6)})
+
+
+def query_prices():
+    highest_price=Item.query.filter_by(highest_price=Item.highest_price).first().highest_price
+    lowest_price=Item.query.filter_by(lowest_price=Item.lowest_price).first().lowest_price
+    current_price=  Item.query.filter_by(current_price=Item.current_price).first().current_price
+
+    print(highest_price)
