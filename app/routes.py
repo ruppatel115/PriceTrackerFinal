@@ -134,11 +134,6 @@ def data(name):
 
 
     item = db.session.query(Item).filter(Item.name == name).first()
-
-
-    #highest_price=item.highest_price
-    #lowest_price=item.lowest_price
-    #current_price=item.current_price
     highest_price = Item.query.filter_by(name = name, highest_price=Item.highest_price).first().highest_price
     lowest_price = Item.query.filter_by(name= name,lowest_price=Item.lowest_price).first().lowest_price
 
