@@ -12,8 +12,8 @@ from datetime import datetime
 from random import sample
 from flask_wtf import Form
 from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
+import bs4
 
-#
 #
 # @app.route('/test')
 # def search():
@@ -36,7 +36,6 @@ def home():
         #return render_template('home.html', title='Home', form=form)
 
     return render_template('home.html', title='Home', form=form)
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -89,15 +88,29 @@ def reset_db():
 def item(name):
     url = Item.query.filter_by(url=Item.url).first().url
     form = SetPriceForm()
+    if form.validate_on_submit():
+        trackprice = form.tracking_price.data
+        emailtemp = form.email.data
+        exists = db.session.query(db.exists().where(Email.email == emailtemp)).scalar()
+        if not exists: #if email does not exist, add it to the db
+            newemail = Email(email=emailtemp)
+            db.session.add(newemail)
+            db.session.commit()
+        #then add the tracking price to it
+        email = Email.query.filter_by(email=emailtemp).first()
+        email.trackingprice = trackprice    #TODO this isn't working
+
+
+
+
     return render_template('item.html', form=form, name=name, url=url) #TODO item parameter
 
 @app.route('/profile')
 @login_required
 def profile():
-    currentuser = User.query.filter_by(username={{current_user.username}}).first()
-    useritems = Item.query.filter_by(userId=currentuser.id).all()
-
-    return render_template('profile.html',title='Profile', items=useritems)
+    u2is = current_user.items
+    items = [u2i.item for u2i in u2is]
+    return render_template('profile.html',title='Profile', items=items)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
