@@ -3,7 +3,7 @@
     <!DOCTYPE html>
 <html lang="en">
 <title>PriceWatchers</title>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" >
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href={{ url_for('home') }}>PriceWatchers</a>
@@ -20,7 +20,8 @@
 </html>
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <body style="background: linear-gradient(to bottom right, #666699 0%, #ffffff 100%) fixed;">
+    <div class="container" >
         {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
@@ -32,5 +33,6 @@
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
     </div>
+    </body>
 {% endblock %}
 <head><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/></head>
