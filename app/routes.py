@@ -106,10 +106,9 @@ def item(name):
 @app.route('/profile')
 @login_required
 def profile():
-    currentuser = User.query.filter_by(username={{current_user.username}}).first()
-    useritems = Item.query.filter_by(userId=currentuser.id).all()
-
-    return render_template('profile.html',title='Profile', items=useritems)
+    u2is = current_user.items
+    items = [u2i.item for u2i in u2is]
+    return render_template('profile.html',title='Profile', items=items)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
