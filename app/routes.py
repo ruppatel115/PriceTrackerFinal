@@ -12,13 +12,6 @@ from random import sample
 from flask_wtf import Form
 from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
 
-#
-#
-# @app.route('/test')
-# def search():
-#    term = flask.request.args.get('query')
-#    possibilities = [i for [i] in sqlite3.connect('app.db').cursor().execute("SELECT * FROM videos WHERE title LIKE %s", ("%" + user_input + "%")]
-#    return flask.jsonify({'html':'<p>No results found</p>' if not possibilities else '<ul>\n{}</ul>'.format('\n'.join('<li>{}</li>'.format(i) for i in possibilities))})
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -89,35 +82,26 @@ def reset_db():
 @app.route('/item/<name>', methods=['GET', 'POST'])
 def item(name):
 
-
-    url = Item.query.filter_by(url=Item.url).first().url
     item = db.session.query(Item).filter(Item.name == name).first()
+    highest_price = item.highest_price
+    lowest_price = item.lowest_price
+    current_price = item.current_price
     item_id = item.id
+    url=item.url
 
     form = SetPriceForm()
 
     if form.validate_on_submit():
         track_price = form.tracking_price.data
         email_temp = form.email.data
-
         exists = db.session.query(db.exists().where(Email.email == email_temp)).scalar()
         if not exists: #if email does not exist, add it to the db
-
-            new_email = Email(email=email_temp)
-            new_pricing=Email(tracking_price=track_price)
-            item_id=Email(item_id=item_id)
-
-            #track=Email(email=email_temp,item_id=item_id,tracking_price=track_price)
-            db.session.add(new_email)
-            db.session.add(new_pricing)
-            db.session.add(item_id)
-
+            track=Email(email=email_temp,item_id=item_id,tracking_price=track_price)
+            db.session.add(track)
             db.session.commit()
-        #then add the tracking price to it
-        email = Email.query.filter_by(email=email_temp).first()
-        email.tracking_price = track_price    #TODO this isn't working
 
-    return render_template('item.html', form=form, name=name, url=url) #TODO item parameter
+
+    return render_template('item.html', form=form, name=name, url=url, highest_price=highest_price, lowest_price=lowest_price, current_price=current_price) #TODO item parameter
 
 @app.route('/profile')
 @login_required
@@ -143,12 +127,22 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile',form=form)
 
 
+
+
+
 @app.route('/item')
 def data():
 
+
+    #item = db.session.query(Item).filter(Item.name == name).first()
+
+
+    #highest_price=item.highest_price
+    #lowest_price=item.lowest_price
+    #current_price=item.current_price
     highest_price = Item.query.filter_by(highest_price=Item.highest_price).first().highest_price
     lowest_price = Item.query.filter_by(lowest_price=Item.lowest_price).first().lowest_price
 
 
-    return jsonify({'results': sample(range(lowest_price, highest_price),5)})
+    return jsonify({'results': sample(range(lowest_price, highest_price),12)})
 
