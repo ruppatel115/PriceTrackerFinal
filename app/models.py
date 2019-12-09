@@ -52,6 +52,7 @@ class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128))
     itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
+    trackingprice = db.Column(db.Integer())
     #email_to_users = db.relationship('User', backref='user', lazy='dynamic')
 
 class UserToItem(db.Model):
