@@ -19,6 +19,7 @@ from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField
 def home():
     form = SearchForm()
     if form.validate_on_submit():
+        #item = Item.query.filter_by(name=form.item_name.data).first()
         item = Item.query.filter_by(name=form.item_name.data).first()
 
 
@@ -88,9 +89,7 @@ def item(name):
     current_price = item.current_price
     item_id = item.id
     url=item.url
-
     form = SetPriceForm()
-
     if form.validate_on_submit():
         track_price = form.tracking_price.data
         email_temp = form.email.data
@@ -100,8 +99,9 @@ def item(name):
             db.session.add(track)
             db.session.commit()
 
+    jsonify({'results': sample(range(lowest_price, highest_price),12)})
 
-    return render_template('item.html', form=form, name=name, url=url, highest_price=highest_price, lowest_price=lowest_price, current_price=current_price) #TODO item parameter
+    return render_template('item.html', form=form, name=name, url=url, highest_price=highest_price, lowest_price=lowest_price, current_price=current_price)
 
 @app.route('/profile')
 @login_required
@@ -129,18 +129,18 @@ def edit_profile():
 
 
 
-@app.route('/item')
-def data():
+@app.route('/data/<name>')
+def data(name):
 
 
-    #item = db.session.query(Item).filter(Item.name == name).first()
+    item = db.session.query(Item).filter(Item.name == name).first()
 
 
     #highest_price=item.highest_price
     #lowest_price=item.lowest_price
     #current_price=item.current_price
-    highest_price = Item.query.filter_by(highest_price=Item.highest_price).first().highest_price
-    lowest_price = Item.query.filter_by(lowest_price=Item.lowest_price).first().lowest_price
+    highest_price = Item.query.filter_by(name = name, highest_price=Item.highest_price).first().highest_price
+    lowest_price = Item.query.filter_by(name= name,lowest_price=Item.lowest_price).first().lowest_price
 
 
     return jsonify({'results': sample(range(lowest_price, highest_price),12)})

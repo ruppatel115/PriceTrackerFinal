@@ -7,10 +7,6 @@
 <h4>
 Product Name: {{ name }}
 
-
-
-
-
 </h4>
 
 <h5>
@@ -45,7 +41,7 @@ Current price: ${{ current_price }}
 
 
     var myChart;
-    var getData = $.get('/item');
+    var getData = $.get('/data/{{ name }}');
 
     getData.done(function(results) {
 

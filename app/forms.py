@@ -53,5 +53,7 @@ class SetPriceForm(FlaskForm):
 
 class SearchForm(FlaskForm):
     item_name = StringField('Search item', validators=[DataRequired()])
+    #item_url = StringField('Search item', validators=[DataRequired()])
+
     submit = SubmitField('Submit')
 
