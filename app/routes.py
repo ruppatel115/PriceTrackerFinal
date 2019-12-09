@@ -27,10 +27,10 @@ from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField
 def home():
     search = SearchForm(request.form)
 
-    if request.method == 'POST' and search.validate_on_submit():
-        item = item.filter(models.Item.name.like('%' + searchForm.item_name.data + '%'))
-        item = item.order_by(models.Item.name).all()
-        return render_template('item.html')
+    #if request.method == 'POST' and search.validate_on_submit():
+        #item = item.filter(models.Item.name.like('%' + searchForm.item_name.data + '%'))
+        #item = item.order_by(models.Item.name).all()
+        #return render_template('item.html')
     return render_template('home.html', title='Home')
 
 
@@ -99,8 +99,9 @@ def item():
 @app.route('/profile')
 @login_required
 def profile():
-    currentuser = User.query.filter_by(username={{current_user.username}}).first()
-    useritems = Item.query.filter_by(userId=currentuser.id).all()
+
+    currentuser = User.query.filter_by(username=current_user.username).first()
+    useritems = UserToItem.query.filter_by(user_id=currentuser.id).all()
 
     return render_template('profile.html',title='Profile', items=useritems)
 
