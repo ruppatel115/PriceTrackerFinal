@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
-    itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
+    items = db.relationship('UserToItem', back_populates='user', lazy='dynamic')
 
 
     def __repr__(self):
@@ -35,7 +35,8 @@ class Item(db.Model):
     highest_price = db.Column(db.Integer())
     lowest_price = db.Column(db.Integer())
     description = db.Column(db.String(10000))
-    user_to_items = db.relationship('User', backref='item', lazy='dynamic')
+    #user_to_items = db.relationship('User', backref='item', lazy='dynamic')
+    users = db.relationship('UserToItem', back_populates='item', lazy=True)
     item_to_time = db.relationship('ItemToTime', backref='item', lazy='dynamic')
     item_to_email = db.relationship('Email', backref='item', lazy='dynamic')
     
@@ -52,7 +53,14 @@ class Email(db.Model):
     email = db.Column(db.String(128))
     itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
     #email_to_users = db.relationship('User', backref='user', lazy='dynamic')
-    
+
+class UserToItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer(),db.ForeignKey('user.id'))
+    item_id = db.Column(db.Integer(), db.ForeignKey('item.id'))
+    user = db.relationship('User', backref="item", lazy=True)
+    item = db.relationship('Item', backref="user", lazy=True)
+
 
 @login.user_loader
 def load_user(id):
