@@ -1,7 +1,6 @@
 import sqlite3
-
 import flask
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db, models
@@ -13,25 +12,20 @@ from random import sample
 from flask_wtf import Form
 from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
 
-#
-#
-# @app.route('/test')
-# def search():
-#    term = flask.request.args.get('query')
-#    possibilities = [i for [i] in sqlite3.connect('app.db').cursor().execute("SELECT * FROM videos WHERE title LIKE %s", ("%" + user_input + "%")]
-#    return flask.jsonify({'html':'<p>No results found</p>' if not possibilities else '<ul>\n{}</ul>'.format('\n'.join('<li>{}</li>'.format(i) for i in possibilities))})
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     form = SearchForm()
-    #if request.method=='POST':
     if form.validate_on_submit():
         item = Item.query.filter_by(name=form.item_name.data).first()
+
+
         if item is None:
             flash('Invalid item')
             return redirect(url_for('home'))
+
         return redirect(url_for('item', name=item.name))
         #return render_template('home.html', title='Home', form=form)
 
@@ -87,17 +81,34 @@ def reset_db():
 
 @app.route('/item/<name>', methods=['GET', 'POST'])
 def item(name):
-    url = Item.query.filter_by(url=Item.url).first().url
+
+    item = db.session.query(Item).filter(Item.name == name).first()
+    highest_price = item.highest_price
+    lowest_price = item.lowest_price
+    current_price = item.current_price
+    item_id = item.id
+    url=item.url
+
     form = SetPriceForm()
-    return render_template('item.html', form=form, name=name, url=url) #TODO item parameter
+
+    if form.validate_on_submit():
+        track_price = form.tracking_price.data
+        email_temp = form.email.data
+        exists = db.session.query(db.exists().where(Email.email == email_temp)).scalar()
+        if not exists: #if email does not exist, add it to the db
+            track=Email(email=email_temp,item_id=item_id,tracking_price=track_price)
+            db.session.add(track)
+            db.session.commit()
+
+
+    return render_template('item.html', form=form, name=name, url=url, highest_price=highest_price, lowest_price=lowest_price, current_price=current_price) #TODO item parameter
 
 @app.route('/profile')
 @login_required
 def profile():
-    currentuser = User.query.filter_by(username={{current_user.username}}).first()
-    useritems = Item.query.filter_by(userId=currentuser.id).all()
-
-    return render_template('profile.html',title='Profile', items=useritems)
+    u2is = current_user.items
+    items = [u2i.item for u2i in u2is]
+    return render_template('profile.html',title='Profile', items=items)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -115,9 +126,22 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile',form=form)
 
 
-@app.route('/data')
-def data():
-    my_items=item.query.all()
-    return render_template('data.html', my_items=my_items)
 
+
+
+@app.route('/item')
+def data():
+
+
+    #item = db.session.query(Item).filter(Item.name == name).first()
+
+
+    #highest_price=item.highest_price
+    #lowest_price=item.lowest_price
+    #current_price=item.current_price
+    highest_price = Item.query.filter_by(highest_price=Item.highest_price).first().highest_price
+    lowest_price = Item.query.filter_by(lowest_price=Item.lowest_price).first().lowest_price
+
+
+    return jsonify({'results': sample(range(lowest_price, highest_price),12)})
 

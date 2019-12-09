@@ -7,9 +7,21 @@
 <h4>
 Product Name: {{ name }}
 
+
+
+
+
 </h4>
 
-
+<h5>
+Highest price: ${{ highest_price }}
+</h5>
+    <h5>
+Lowest price: ${{ lowest_price }}
+</h5>
+    <h5>
+Current price: ${{ current_price }}
+</h5>
     <h4>    {# TODO: hide email part if logged in with email, hide form after submission #}
     <div class="row" style="border: 2px solid #000000">
         <div class="col-md-4">
@@ -25,14 +37,30 @@ Product Name: {{ name }}
       <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   </head>
 <body>
+<button id="update">Update The chart!</button>
 <div class="ct-chart ct-perfect-fourth"></div>
+
 <script>
+
+
+
+    var myChart;
+    var getData = $.get('/item');
+
+    getData.done(function(results) {
+
+
+
+
+
+
+
     var data = {
   // A labels array that can contain any sort of values
   labels: ["January", "February", "March", "April", "May", "June", "July", "August", "Sepetember", "October", "November", "December"],
   // Our series array that contains series objects or in this case series data arrays
   series: [
-   [10,9,8,7,6,4,7,8]
+   results.results
   ]
 };
     var options = {
@@ -41,7 +69,30 @@ Product Name: {{ name }}
 };
 
 
-new Chartist.Line('.ct-chart', data, options);</script>
+    var myChart = new Chartist.Line('.ct-chart', data, options);
+});
+    function updateChart(){
+        var updatedData = $.get('/item');
+
+        updatedData.done(function(results){
+
+              var data = {
+  // A labels array that can contain any sort of values
+  labels: ["January", "February", "March", "April", "May", "June", "July", "August", "Sepetember", "October", "November", "December"],
+  // Our series array that contains series objects or in this case series data arrays
+  series: [
+   results.results
+  ]
+};
+myChart.update(data)
+        });
+
+    }
+
+    $("#update").on('click', updateChart);
+
+</script>
+
 </body>
 </html>
 {% endblock %}
