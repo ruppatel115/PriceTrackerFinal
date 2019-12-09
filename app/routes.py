@@ -87,9 +87,9 @@ def reset_db():
 
 @app.route('/item/<name>', methods=['GET', 'POST'])
 def item(name):
-    #url = Item.query.filter_by(url=Item.url)
+    url = Item.query.filter_by(url=Item.url).first().url
     form = SetPriceForm()
-    return render_template('item.html', form=form, name=name) #TODO item parameter
+    return render_template('item.html', form=form, name=name, url=url) #TODO item parameter
 
 @app.route('/profile')
 @login_required
