@@ -9,29 +9,7 @@ Product Name: {{ name }}
 
 </h4>
 
-     <body>
-    <input type='text' name='query' id='query'>
-    <button type='button' id='search'>Search</button>
-    <div id='results'></div>
- </body>
-  <script>
-    $(document).ready(function() {
-     $('#search').click(function() {
-       var text = $('#query').val();
-        $.ajax({
-        url: "/search",
-        type: "get",
-        data: {query: text},
-        success: function(response) {
-        $("#results").html(response.html);
-       },
-       error: function(xhr) {
-        //Do Something to handle error
-       }
-     });
-   });
-  });
-  </script>
+
     <h4>    {# TODO: hide email part if logged in with email, hide form after submission #}
     <div class="row" style="border: 2px solid #000000">
         <div class="col-md-4">
@@ -51,7 +29,7 @@ Product Name: {{ name }}
 <script>
     var data = {
   // A labels array that can contain any sort of values
-  labels: ["January", "February", "March", "April", "May", "June", "July", "August"],
+  labels: ["January", "February", "March", "April", "May", "June", "July", "August", "Sepetember", "October", "November", "December"],
   // Our series array that contains series objects or in this case series data arrays
   series: [
    [10,9,8,7,6,4,7,8]

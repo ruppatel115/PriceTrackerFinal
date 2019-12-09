@@ -22,16 +22,20 @@ from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField
 #    return flask.jsonify({'html':'<p>No results found</p>' if not possibilities else '<ul>\n{}</ul>'.format('\n'.join('<li>{}</li>'.format(i) for i in possibilities))})
 
 
-@app.route('/')
-@app.route('/home')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home():
-    search = SearchForm(request.form)
+    form = SearchForm()
+    #if request.method=='POST':
+    if form.validate_on_submit():
+        item = Item.query.filter_by(name=form.item_name.data).first()
+        if item is None:
+            flash('Invalid item')
+            return redirect(url_for('home'))
+        return redirect(url_for('item', name=item.name))
+        #return render_template('home.html', title='Home', form=form)
 
-    if request.method == 'POST' and search.validate_on_submit():
-        item = item.filter(models.Item.name.like('%' + searchForm.item_name.data + '%'))
-        item = item.order_by(models.Item.name).all()
-        return render_template('item.html')
-    return render_template('home.html', title='Home')
+    return render_template('home.html', title='Home', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -81,20 +85,11 @@ def reset_db():
 
     return redirect(url_for('home'))
 
-@app.route('/item', methods=['GET', 'POST'])
-def item():
-    #addmore database stuff for page
-    if request.method == 'POST':
-        name = request.form['name']
-
-
-        form = SetPriceForm()
-        if form.validate_on_submit():
-            trackingPrice = form.tracking_price
-            #Do something with that
-
-        return render_template('item.html', name=name, form=form) #TODO item parameter
-    return render_template('home.html')
+@app.route('/item/<name>', methods=['GET', 'POST'])
+def item(name):
+    #url = Item.query.filter_by(url=Item.url)
+    form = SetPriceForm()
+    return render_template('item.html', form=form, name=name) #TODO item parameter
 
 @app.route('/profile')
 @login_required

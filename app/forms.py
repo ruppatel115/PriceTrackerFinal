@@ -50,7 +50,8 @@ class SetPriceForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Submit')
 
-class SearchForm(Form):
+
+class SearchForm(FlaskForm):
     item_name = StringField('Search item', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
