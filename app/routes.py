@@ -1,3 +1,4 @@
+import smtplib
 import sqlite3
 import flask
 from flask import render_template, flash, redirect, url_for, request, jsonify
@@ -11,7 +12,7 @@ from datetime import datetime
 from random import sample
 from flask_wtf import Form
 from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
-
+import smtpd
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -94,12 +95,34 @@ def item(name):
         track_price = form.tracking_price.data
         email_temp = form.email.data
         exists = db.session.query(db.exists().where(Email.email == email_temp)).scalar()
-        if not exists: #if email does not exist, add it to the db
-            track = Email(email=email_temp, item_id=item_id, tracking_price=track_price)
-            db.session.add(track)
-            db.session.commit()
+        track = Email(email=email_temp, item_id=item_id, tracking_price=track_price)
+        db.session.add(track)
+        db.session.commit()
 
-    jsonify({'results': sample(range(lowest_price, highest_price),12)})
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+
+        server.login('price.tracker2019@gmail.com', 'ptpassword')
+
+        subject = 'Price dropped down for '+item.name
+        body="The item you were tracking has dropped in price! Click link to purchase item at:\n "+url
+
+        msg = "Subject: "+subject+"\n\n"+body
+        server.sendmail(
+            'price.tracker2019@gmail.com',
+            email_temp,
+            msg
+
+        )
+        print('EMAIL HAS BEEN SENT')
+
+        server.quit()
+
+
+
 
     return render_template('item.html', form=form, name=name, url=url, highest_price=highest_price, lowest_price=lowest_price, current_price=current_price)
 
