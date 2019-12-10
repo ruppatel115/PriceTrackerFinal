@@ -95,7 +95,7 @@ def item(name):
         email_temp = form.email.data
         exists = db.session.query(db.exists().where(Email.email == email_temp)).scalar()
         if not exists: #if email does not exist, add it to the db
-            track=Email(email=email_temp,item_id=item_id,tracking_price=track_price)
+            track = Email(email=email_temp, item_id=item_id, tracking_price=track_price)
             db.session.add(track)
             db.session.commit()
 
