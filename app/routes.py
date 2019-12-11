@@ -84,7 +84,7 @@ def reset_db():
 
 @app.route('/item/<url>', methods=['GET', 'POST'])
 def item(url):
-
+#fixed
     item = db.session.query(Item).filter(Item.url == url).first()
     highest_price = item.highest_price
     lowest_price = item.lowest_price
