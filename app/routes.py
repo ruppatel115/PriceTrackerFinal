@@ -20,8 +20,8 @@ from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField
 def home():
     form = SearchForm()
     if form.validate_on_submit():
-        #item = Item.query.filter_by(name=form.item_name.data).first()
-        item = Item.query.filter_by(url=form.item_url.data).first()
+        item = Item.query.filter_by(name=form.item_name.data).first()
+        #item = Item.query.filter_by(url=form.item_url.data).first()
 
 
 
@@ -29,7 +29,7 @@ def home():
             flash('Invalid item')
             return redirect(url_for('home'))
 
-        return redirect(url_for('item', url=item.url))
+        return redirect(url_for('item', name=item.name))
         #return render_template('home.html', title='Home', form=form)
 
     return render_template('home.html', title='Home', form=form)
@@ -82,10 +82,10 @@ def reset_db():
 
     return redirect(url_for('home'))
 
-@app.route('/item/<url>', methods=['GET', 'POST'])
-def item(url):
+@app.route('/item/<name>', methods=['GET', 'POST'])
+def item(name):
 #fixed
-    item = db.session.query(Item).filter(Item.url == url).first()
+    item = db.session.query(Item).filter(Item.name == name).first()
     highest_price = item.highest_price
     lowest_price = item.lowest_price
     current_price = item.current_price

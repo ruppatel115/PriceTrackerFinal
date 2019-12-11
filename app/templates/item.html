@@ -41,7 +41,7 @@ Current price: ${{ current_price }}
 
 
     var myChart;
-    var getData = $.get('/data/{{ name }}');
+    var getData = $.get('/data/{{ url }}');
 
     getData.done(function(results) {
 
@@ -61,7 +61,7 @@ Current price: ${{ current_price }}
         myChart = new Chartist.Line('.ct-chart', data, options);
 });
     function updateChart(){
-        var updatedData = $.get('/data/{{ name }}');
+        var updatedData = $.get('/data/{{ url }}');
 
         updatedData.done(function(results){
 
