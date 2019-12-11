@@ -98,27 +98,29 @@ def item(name):
         db.session.add(track)
         db.session.commit()
 
+        if(track_price<current_price):
 
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
 
-        server.login('price.tracker2019@gmail.com', 'ptpassword')
+            server.login('price.tracker2019@gmail.com', 'ptpassword')
 
-        subject = 'Price dropped down for '+item.name
-        body="The item you were tracking has dropped in price! Click link to purchase item at:\n "+url
+            subject = 'Price dropped down for '+item.name
+            body="The item you were tracking has dropped in price! Click link to purchase item at:\n "+url
 
-        msg = "Subject: "+subject+"\n\n"+body
-        server.sendmail(
-            'price.tracker2019@gmail.com',
-            email_temp,
-            msg
+            msg = "Subject: "+subject+"\n\n"+body
+            server.sendmail(
+                'price.tracker2019@gmail.com',
 
-        )
-        print('EMAIL HAS BEEN SENT')
+                email_temp,
+                msg
 
-        server.quit()
+            )
+            print('EMAIL HAS BEEN SENT')
+
+            server.quit()
 
 
 

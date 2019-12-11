@@ -46,11 +46,6 @@ Current price: ${{ current_price }}
     getData.done(function(results) {
 
 
-
-
-
-
-
     var data = {
   // A labels array that can contain any sort of values
   labels: ["January", "February", "March", "April", "May", "June", "July", "August", "Sepetember", "October", "November", "December"],
@@ -63,12 +58,10 @@ Current price: ${{ current_price }}
         width: 1000,
         height: 500
 };
-
-
-    var myChart = new Chartist.Line('.ct-chart', data, options);
+        myChart = new Chartist.Line('.ct-chart', data, options);
 });
     function updateChart(){
-        var updatedData = $.get('/item');
+        var updatedData = $.get('/data/{{ name }}');
 
         updatedData.done(function(results){
 
