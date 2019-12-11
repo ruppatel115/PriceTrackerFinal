@@ -20,14 +20,16 @@ from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField
 def home():
     form = SearchForm()
     if form.validate_on_submit():
-        item = Item.query.filter_by(name=form.item_name.data).first()
+        #item = Item.query.filter_by(name=form.item_name.data).first()
+        item = Item.query.filter_by(url=form.item_url.data).first()
+
 
 
         if item is None:
             flash('Invalid item')
             return redirect(url_for('home'))
 
-        return redirect(url_for('item', name=item.name))
+        return redirect(url_for('item', url=item.url))
         #return render_template('home.html', title='Home', form=form)
 
     return render_template('home.html', title='Home', form=form)
@@ -80,14 +82,15 @@ def reset_db():
 
     return redirect(url_for('home'))
 
-@app.route('/item/<name>', methods=['GET', 'POST'])
-def item(name):
+@app.route('/item/<url>', methods=['GET', 'POST'])
+def item(url):
 
-    item = db.session.query(Item).filter(Item.name == name).first()
+    item = db.session.query(Item).filter(Item.url == url).first()
     highest_price = item.highest_price
     lowest_price = item.lowest_price
     current_price = item.current_price
     item_id = item.id
+    name=item.name
     url=item.url
     form = SetPriceForm()
     if form.validate_on_submit():
