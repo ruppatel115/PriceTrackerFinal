@@ -147,7 +147,7 @@ def profile():
     #     imglink = link1["src"].split("src=")[-1]
     #     imgs.append(imglink)
 
-    return render_template('profile.html',title='Profile', items=items, imgs=imgs)
+    return render_template('profile.html',title='Profile', items=items)#, imgs=imgs)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
