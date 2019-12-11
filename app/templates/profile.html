@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block content %}
+{% block app_content %}
     <h1>Welcome to your profile {{ current_user.username }}!</h1>
     <h3>Your tracked items:</h3>
         {% for item in items %}
