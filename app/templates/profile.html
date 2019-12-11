@@ -3,7 +3,7 @@
     <h1>Welcome to your profile {{ current_user.username }}!</h1>
     <h3>Your tracked items:</h3>
         {% for item, img in items, imgs %}
-            <li><img src="{{ img }}" alt="Item image"><b><a href="{{ item.url }}">{{ item.name }}</a></b> <br>
+            <li><b><a href="{{ item.url }}">{{ item.name }}</a></b> <br>
              <br>&emsp; Current price: {{ item.current_price }} </li></br>
         {% endfor %}
     <h3>Import wishlist?</h3>
