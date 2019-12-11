@@ -12,15 +12,14 @@ from datetime import datetime
 from random import sample
 from flask_wtf import Form
 from wtforms import Form, StringField, TextAreaField, SubmitField, PasswordField, BooleanField, DateField, SelectField, SelectMultipleField, IntegerField
-import smtpd
-
+import requests
+from bs4 import BeautifulSoup
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     form = SearchForm()
     if form.validate_on_submit():
-        #item = Item.query.filter_by(name=form.item_name.data).first()
         item = Item.query.filter_by(name=form.item_name.data).first()
 
 
@@ -131,7 +130,19 @@ def item(name):
 def profile():
     u2is = current_user.items
     items = [u2i.item for u2i in u2is]
-    return render_template('profile.html',title='Profile', items=items)
+    #TODO this isn't working yet
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+    urls = [item.url for item in items]
+    imgs = []
+    for url in urls:
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.content, "html.parser")
+        #itemTitle = soup.find(id="productTitle").get_text()
+        link1 = soup.find(id="imgTagWrapperId").find('img', src=True)
+        imglink = link1["src"].split("src=")[-1]
+        imgs.append(imglink)
+
+    return render_template('profile.html',title='Profile', items=items, imgs=imgs)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

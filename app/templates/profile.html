@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Welcome to your profile {{ current_user.username }}!</h1>
-    <h2>Your tracked items:</h2>
-        {% for item in items %}
-            <li><b><a href="{{ item.url }}">{{ item.name }}</a></b> <br>
-             <br>Price: {{ item.current_price }} </li></br>
+    <h3>Your tracked items:</h3>
+        {% for item, img in items, imgs %}
+            <li><img src="{{ img }}" alt="Item image"><b><a href="{{ item.url }}">{{ item.name }}</a></b> <br>
+             <br>&emsp; Current price: {{ item.current_price }} </li></br>
         {% endfor %}
     <h3>Import wishlist?</h3>
 {% endblock %}

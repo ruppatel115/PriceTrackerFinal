@@ -17,6 +17,7 @@
           <li><a href={{ url_for('register') }}><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
           <li><a href={{ url_for('login') }}><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
           {% else %}
+          <li><a href={{ url_for('profile') }}><span class="glyphicon glyphicon-user"></span>Profile</a></li>
           <li><a href={{ url_for('edit_profile') }}><span class="glyphicon glyphicon-user"></span>Edit Profile</a></li>
           <li><a href={{ url_for('logout') }}><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
           {% endif %}
