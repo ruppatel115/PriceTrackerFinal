@@ -56,3 +56,8 @@ class SearchForm(FlaskForm):
 
     submit = SubmitField('Submit')
 
+class WishlistForm(FlaskForm):
+    wishlist_link = StringField('Wishlist link', validators=[DataRequired()])
+
+    submit = SubmitField('Submit')
+

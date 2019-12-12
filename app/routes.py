@@ -147,7 +147,11 @@ def profile():
     #     imglink = link1["src"].split("src=")[-1]
     #     imgs.append(imglink)
 
-    return render_template('profile.html',title='Profile', items=items)#, imgs=imgs)
+    form = WishlistForm()
+    if form.validate_on_submit():
+        flash('This feature is not implemented yet')
+        return redirect(url_for('profile'))
+    return render_template('profile.html',title='Profile', items=items, form=form)#, imgs=imgs)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
