@@ -3,10 +3,14 @@
 {% block app_content %}
     <h1>Welcome to your profile {{ current_user.username }}!</h1>
     <h3>Your tracked items:</h3>
+    <div class="row" style="border: 2px solid #000000">
+        <div class="col-md-4">
         {% for item in items %}
             <li><b><a href="{{ item.url }}">{{ item.name }}</a></b> <br>
                 <br>&emsp; Current price: {{ item.current_price }}, <a href={{ url_for('item',name=item.name) }}>View more</a> </li></br>
         {% endfor %}
+        </div>
+    </div>
     <h3>Import wishlist?</h3>
     <div class="row" style="border: 2px solid #000000">
         <div class="col-md-4">
