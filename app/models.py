@@ -46,8 +46,6 @@ class ItemToTime(db.Model):
   datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
   price = db.Column(db.Integer())
 
-
-
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128))

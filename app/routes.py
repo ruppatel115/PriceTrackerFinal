@@ -7,7 +7,8 @@ from werkzeug.urls import url_parse
 from app import app, db, models
 from app.forms import *
 from flask_login import LoginManager
-from app.models import *
+from app.models import Item, ItemToTime, UserToItem
+from app.models import Email as EmailModel
 from datetime import datetime
 from random import sample
 from flask_wtf import Form
@@ -23,8 +24,6 @@ def home():
         item = Item.query.filter_by(name=form.item_name.data).first()
         #item = Item.query.filter_by(url=form.item_url.data).first()
 
-
-
         if item is None:
             flash('Invalid item')
             return redirect(url_for('home'))
@@ -33,7 +32,6 @@ def home():
         #return render_template('home.html', title='Home', form=form)
 
     return render_template('home.html', title='Home', form=form)
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -49,9 +47,6 @@ def login():
             next_page = url_for('home')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
-
-
-
 
 @app.route('/logout')
 def logout():
@@ -70,7 +65,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-
 @app.route('/reset')
 def reset_db():
     flash("Resetting database: deleting old data")
@@ -79,6 +73,40 @@ def reset_db():
     for table in reversed(meta.sorted_tables):
         print('Clear table {}'.format(table))
         db.session.execute(table.delete())
+    item1 = Item(id=1 ,url="https://www.amazon.com/Logitech-Wireless-Computer-Mouse-Side/dp/B003NR57BY",name="Logitech M510",current_price=20, highest_price=40, lowest_price=20)
+    item2 = Item(id=2 ,url="https://www.amazon.com/Apple-AirPods-Charging-Latest-Model/dp/B07PXGQC1Q",name="Airpods",current_price=139, highest_price=159, lowest_price=120)
+    item3 = Item(id=3 ,url="https://www.amazon.com/Ticonderoga-Wood-Cased-Graphite-Pencils-33904/dp/B001GAP4PY",name="Ticonderoga Pencils",current_price=10, highest_price=10, lowest_price=8)
+    item4 = Item(id=4, url="https://www.amazon.com/PlayStation-4-Console-1TB-Slim/dp/B074LRF639",name="PS4",current_price=260, highest_price=260, lowest_price=200)
+    item5 = Item(id=5, url="https://www.amazon.com/Backpack-Business-Charging-Resistant-Computer/dp/B06XZTZ7GB",name="Travel Laptop Backpack",current_price=32, highest_price=50, lowest_price=25)
+    user1 = User(id=1, username="Elias",email="eplatt@ithaca.edu")
+    user1.set_password("Platt")
+    user2 = User(id=2, username="Rup", email="rpatel@ithaca.edu")
+    user2.set_password("Patel")
+    user3 = User(id=3, username="Warren", email="wwatson@ithaca.edu")
+    user3.set_password("Watson")
+    db.session.add(item1)
+    db.session.add(item2)
+    db.session.add(item3)
+    db.session.add(item4)
+    db.session.add(item5)
+    db.session.add(user1)
+    db.session.add(user2)
+    db.session.add(user3)
+    db.session.commit()
+    u2i1 = UserToItem(id=1, user_id=1, item_id=1)
+    u2i2 = UserToItem(id=2, user_id=1, item_id=4)
+    u2i3 = UserToItem(id=3, user_id=2, item_id=2)
+    u2i4 = UserToItem(id=4, user_id=2, item_id=5)
+    u2i5 = UserToItem(id=5, user_id=2, item_id=1)
+    u2i6 = UserToItem(id=6, user_id=3, item_id=2)
+    db.session.add(u2i1)
+    db.session.add(u2i2)
+    db.session.add(u2i3)
+    db.session.add(u2i4)
+    db.session.add(u2i5)
+    db.session.add(u2i6)
+    db.session.commit()
+
 
     return redirect(url_for('home'))
 
@@ -97,7 +125,7 @@ def item(name):
         track_price = form.tracking_price.data
         email_temp = form.email.data
         exists = db.session.query(db.exists().where(Email.email == email_temp)).scalar()
-        track = Email(email=email_temp, item_id=item_id, tracking_price=track_price)
+        track = EmailModel(email=email_temp, item_id=item_id, tracking_price=track_price)
         db.session.add(track)
         db.session.commit()
 
