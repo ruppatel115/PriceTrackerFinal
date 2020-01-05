@@ -1,6 +1,5 @@
 altgraph==0.10.2
 bdist-mpkg==0.5.0
-bonjour-py==0.3
 Click==7.0
 Flask==1.1.1
 itsdangerous==1.1.0
