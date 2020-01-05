@@ -124,12 +124,12 @@ def item(name):
     if form.validate_on_submit():
         track_price = form.tracking_price.data
         email_temp = form.email.data
-        exists = db.session.query(db.exists().where(Email.email == email_temp)).scalar()
+        exists = db.session.query(db.exists().where(EmailModel.email == email_temp)).scalar()
         track = EmailModel(email=email_temp, item_id=item_id, tracking_price=track_price)
         db.session.add(track)
         db.session.commit()
 
-        if(track_price<current_price):
+        if(current_price<track_price):
 
             server = smtplib.SMTP('smtp.gmail.com', 587)
             server.ehlo()

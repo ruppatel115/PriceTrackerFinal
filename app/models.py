@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(64), index=True, unique=True)
+    url = db.Column(db.String(10000), index=True)
     name = db.Column(db.String(128))
     current_price = db.Column(db.Integer())
     highest_price = db.Column(db.Integer())
@@ -41,10 +41,10 @@ class Item(db.Model):
     item_to_email = db.relationship('Email', backref='item', lazy='dynamic')
     
 class ItemToTime(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
-  datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-  price = db.Column(db.Integer())
+    id = db.Column(db.Integer, primary_key=True)
+    itemid = db.Column(db.Integer(), db.ForeignKey('item.id'))
+    datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    price = db.Column(db.Integer())
 
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
